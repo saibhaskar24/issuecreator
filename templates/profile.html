@@ -1,0 +1,21 @@
+{% extends "header.html" %} 
+{% block title %}Profile{% endblock %} {% block content %}
+<br>
+<div class="card shadow  portfolio container">
+    <div align="center">
+        <img src="{{ user.userprofile.image.url }}" width="240"> 
+    </div>
+    <div>
+        <h1>Profile</h1>
+        <p>Username: {{ user }}</p>
+        <p>First name: {{ user.first_name }}</p>
+        <p>Last name: {{ user.last_name }}</p>
+        <p>Email: {{ user.email }}</p>
+        <p>Bio: {{ user.userprofile.bio }}</p>
+        <p>Website: {{ user.userprofile.website }}</p>
+    </div>
+</div>
+
+
+
+{% endblock %}
