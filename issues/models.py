@@ -31,7 +31,7 @@ class Issue(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
-    location = models.CharField()
+    location = models.CharField(max_length=20)
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)
