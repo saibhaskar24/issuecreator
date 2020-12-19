@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import UserProfile, Comment
+from .models import UserProfile, Comment, IField, Issue
 from django.contrib.auth.forms import UserCreationForm
 
 
@@ -35,3 +35,20 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('text',)
+
+
+class IssueForm(forms.ModelForm):
+    title = forms.CharField(max_length=128)
+    location = forms.CharField(max_length=128)
+    description = forms.Textarea()
+
+    class Meta:
+        model = Issue
+        fields = ('title', 'description', 'location')
+
+
+class ImageForm(forms.ModelForm):
+    image = forms.ImageField(label='Image')    
+    class Meta:
+        model = IField
+        fields = ('image', )

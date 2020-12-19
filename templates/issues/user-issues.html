@@ -5,7 +5,7 @@
 {% block content %} 
 
 
-{% for post in posts|slice:":1" %}
+{% for post in issues|slice:":1" %}
 
 </br>
 <div class="card shadow  portfolio">
@@ -46,7 +46,7 @@
 {% endfor %}
 
 <h1 align="left">Posts</h1>
- {% for post in posts %}
+ {% for post in issues %}
 
 <div class="card shadow p-3 mb-5 bg-white rounded">
     <div style="text-align: inline;">
@@ -55,9 +55,8 @@
 </div>
 
 <div class="card-body">
-    <a class="card-title" style="font-size: 2em;" href="{% url 'post-detail' post.id %}">{{ post.title }}</a>
+    <a class="card-title" style="font-size: 2em;" href="{% url 'issue-detail' post.id %}">{{ post.title }}</a>
     </br>
-    <a href="{% url 'groups' %}{{ post.groups }}" class="pills">#{{ post.groups }}</a><br>
     <small>{{ post.date_posted|date:"F d, Y" }}</small>
     </br>
     </br>

@@ -39,13 +39,17 @@ class Issue(models.Model):
     def __str__(self):
         return self.title
 
+def get_image_filename(instance, filename):
+    id = instance.issue.id
+    return "issue_data/%s" % (id) 
+
 
 class IField(models.Model):
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE, default=None)
-    image = models.ImageField(upload_to='issue_data', blank=True)
+    image = models.ImageField(upload_to=get_image_filename, verbose_name='Image')
 
     def __str__(self):
-        return self.issue.title + self.image.name
+        return self.issue.title
 
 
 class Comment(models.Model):

@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404, reverse
-from .models import UserProfile, Issue
+from .models import UserProfile, Issue, IField
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator
-from .forms import UserRegisterForm, CommentForm
+from .forms import UserRegisterForm, CommentForm, IssueForm, ImageForm
 from django.views.generic import (
     ListView,
     DetailView,
@@ -33,7 +33,7 @@ def register(request):
         if form.is_valid():
             user = form.save(commit=False)
             user.save()
-            messages.success(self.request, f'User {user} Created Sucessfully! Now Login')
+            messages.success(request, f'User {user} Created Sucessfully! Now Login')
             return redirect('index')
     else:
         form = UserRegisterForm()
@@ -53,7 +53,7 @@ def view_profile(request, pk=None):
 class UserListView(ListView):
     model = Issue
     template_name = 'user_posts.html'
-    context_object_name = 'issue'
+    context_object_name = 'issues'
     ordering = ['-date_posted']
 
     def get_queryset(self):
@@ -63,6 +63,7 @@ class UserListView(ListView):
 
 class IssueDetailView(DetailView):
     model = Issue
+
 
 
 class IssueCreateView(LoginRequiredMixin, CreateView):
