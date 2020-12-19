@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>
+        {% block title %}{% endblock %}
+    </title>
+</head>
+
+<body>
+
+
+    <nav class="navbar navbar-default navbar-fixed-top navbar-expand-lg shadow navbar-light bg-white">
+        <a class="navbar-brand" href="{% url 'index' %}">
+            <img src="{% static "Vlogo.png" %}" width="30" height="30" class="d-inline-block align-top" alt="VIIT"> Blog
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                {% if user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'post-create' %}">New Post</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'groups' %}">Groups</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'view_profile' %}">Profile</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'groups' %}">Groups</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                {% endif %}
+            </ul>
+            &nbsp; &nbsp;
+            <form class="form-inline my-2 my-lg-0" action="{% url 'searchposts' %}" method="GET" value="{{request.GET.q}}">
+                <input class="form-control mr-sm-2" type="text" name="q" value="{{request.GET.q}}" placeholder="Search..." aria-label="Search">
+                <button class="btn btn-outline-info my-2 my-sm-0" name="submit" type="submit" value="Search">Search</button>
+            </form>
+        </div>
+    </nav>
+
+    <main role="main" >
+                {% if messages %} {% for message in messages %}
+
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+                {% endfor %} {% endif %} {% block content %}{% endblock %}
+    </main>
+    <br>
+    <div id="sticky-footer" class="py-4 bg-secondry text-black-50">
+        <div class="container text-center">
+            <small>Copyright &copy; Bhaskar</small>
+        </div>
+    </div>
+
+</body>
+
+
+</html>
