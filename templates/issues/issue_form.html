@@ -7,10 +7,21 @@
             <legend class="border-bottom mb-4">&nbsp;New Issue</legend>
             <p>&nbsp;Title : {{ form.title }}</p>
             <p>&nbsp;Description : {{ form.description }}</p>
+            <img id="pre" width="250px">
+            <p><a id="im">&nbsp;Image :</a> {{ form.image }}</p>
+            <script>
+                window.onload = function() {
+                    document.getElementById("id_image").onchange = function(event) {
+                        var output = document.getElementById('pre');
+                        output.src = URL.createObjectURL(event.target.files[0]);
+                        document.getElementById("im").innerHTML = "Change Image";
+                    }
+                }
+            </script>
         </fieldset>
         &nbsp;
         <a>
-            <button type="submit" class="btn btn-primary">Creat
+            <button type="submit" class="btn btn-primary">Create
             </button>
             <button type="cancel" onclick="window.location='/'" class="btn btn-outline-info my-2 my-sm-0">&nbsp;Cancel</button>
         </a>

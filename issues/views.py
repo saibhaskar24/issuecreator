@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404, reverse
-from .models import UserProfile, Issue, IField
+from .models import UserProfile, Issue
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator
-from .forms import UserRegisterForm, CommentForm, IssueForm, ImageForm
+from .forms import UserRegisterForm, CommentForm
 from django.views.generic import (
     ListView,
     DetailView,
@@ -64,11 +64,9 @@ class UserListView(ListView):
 class IssueDetailView(DetailView):
     model = Issue
 
-
-
 class IssueCreateView(LoginRequiredMixin, CreateView):
     model = Issue
-    fields = ['title', 'description']
+    fields = ['title', 'description', 'image']
 
     def form_valid(self, form):
         title = form.cleaned_data.get('title')

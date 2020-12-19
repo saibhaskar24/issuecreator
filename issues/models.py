@@ -35,21 +35,10 @@ class Issue(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)
+    image = models.ImageField(upload_to='issue_images', blank=True)
 
     def __str__(self):
         return self.title
-
-def get_image_filename(instance, filename):
-    id = instance.issue.id
-    return "issue_data/%s" % (id) 
-
-
-class IField(models.Model):
-    issue = models.ForeignKey(Issue, on_delete=models.CASCADE, default=None)
-    image = models.ImageField(upload_to=get_image_filename, verbose_name='Image')
-
-    def __str__(self):
-        return self.issue.title
 
 
 class Comment(models.Model):
