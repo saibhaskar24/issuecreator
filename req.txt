@@ -1,0 +1,2 @@
+django-imagekit
+django-widget-tweaks
