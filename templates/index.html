@@ -18,7 +18,7 @@
 		</br>
 		<small>{{ issue.date_issueed|date:"F d, Y" }}</small>
 		</br></br>
-		<p class="card-text">{{ issue.d|truncatewords:"30" }}</p>
+		<p class="card-text">{{ issue.description|truncatewords:"30" }}</p>
 
 	</div>
 	<a href="{% url 'issue-detail' issue.id %}">Comments: {{ issue.comments.count }}</a>
