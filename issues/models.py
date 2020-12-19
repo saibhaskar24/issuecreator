@@ -32,7 +32,7 @@ class Issue(models.Model):
     description = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
     location = models.CharField(max_length=20)
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)
 
@@ -46,3 +46,13 @@ class IField(models.Model):
 
     def __str__(self):
         return self.issue.title + self.image.name
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(Issue, on_delete=models.CASCADE, related_name='comments')
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.TextField()
+    created_date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.text

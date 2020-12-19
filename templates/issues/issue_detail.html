@@ -1,15 +1,15 @@
-{% extends "post/header.html" %} {% block title %}{{ object.title }}{% endblock %} {% block content %}
+{% extends "header.html" %} {% block title %}{{ object.title }}{% endblock %} {% block content %}
 <article class="media content-section container">
     <div class="media-body">
         <div class="article-metadata">
             <h2 class="article-title">{{ object.title }}</h2>
             {% if object.user == user %}
             <div>
-                <a class="btn btn-outline-secondary" href="{% url 'post-update' object.id %}">Update</a>
-                <a class="btn btn-outline-secondary" href="{% url 'post-delete' object.id %}">Delete</a>
+                <a class="btn btn-outline-secondary" href="{% url 'issue-update' object.id %}">Update</a>
+                <a class="btn btn-outline-secondary" href="{% url 'issue-delete' object.id %}">Delete</a>
             </div>
             {% endif %}
-            <a href="{% url 'user-posts' object.user %}">{{ object.user }}</a>
+            <a href="{% url 'user-issues' object.user %}">{{ object.user }}</a>
             </br>
             <p class="text-muted">{{ object.date_posted|date:"F d, Y" }}</small>
 
@@ -30,7 +30,7 @@
     <div class="row">
         <img src="{{ comment.author.userprofile.thumbnail.url }}" width="40" height="40" alt="Profile Image" style="border-radius: 50%;"> &nbsp;&nbsp;
         <div class="card border-left-0 border-right-0 border-top-0">
-            <a class="card-subtitle font-weight-bold" href="{% url 'user-posts' comment.author %}">{{ comment.author }}</a>
+            <a class="card-subtitle font-weight-bold" href="{% url 'user-issues' comment.author %}">{{ comment.author }}</a>
             <div class="date text-muted">
                 {{ comment.created_date }}
             </div>
