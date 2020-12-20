@@ -1,10 +1,15 @@
 {% extends "header.html" %}
 {% block title %}Logout{% endblock %} 
 {% block content %}
+<center>
+    <br><br><br><br>
 <h2>You have been logged out</h2>
+<br><br>
 <div class="border-top pt-3">
     <small class="text-muted">
-        <a href="{% url 'login' %}">Log In Again</a>
+        <!--here-->
+        <a class="btn btn-primary btn-md" href="{% url 'login' %}">Log In Again</a>
     </small>
 </div>
+</center>
 {% endblock content %}
