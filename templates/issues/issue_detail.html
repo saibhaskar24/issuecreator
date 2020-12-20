@@ -22,6 +22,7 @@
     </div>
 </article>
 
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 
 <div class="container">
@@ -30,13 +31,53 @@
     <br>
     <div class="row">
         <div class="card border-left-0 border-right-0 border-top-0">
-            <img src="{{ comment.author.userprofile.thumbnail.url }}" width="40" height="40" alt="Profile Image" style="border-radius: 50%;"> &nbsp;&nbsp;
-            <a class="card-subtitle font-weight-bold" href="{% url 'user-issues' comment.author %}">{{ comment.author }}</a>
+            <img src="{{ comment.user.userprofile.thumbnail.url }}" width="40" height="40" alt="Profile Image" style="border-radius: 50%;"> &nbsp;&nbsp;
+            <a class="card-subtitle font-weight-bold" href="{% url 'user-issues' comment.user %}">{{ comment.user }}</a>
             <div class="date text-muted">
                 {{ comment.created_date }}
             </div>
-            <strong>{{ comment.text|linebreaks }}</strong>
+            <strong>{{ comment.comment|linebreaks }}</strong>
+                    <div class="text-left">
+                        <span class="pointer">
+                        {% if user in comment.likes.users.all%}
+                        <!-- already liked-->
+                        <a href={% url 'requirement_comment_vote' comment_id=comment.pk opition='like' %}> <i
+                            data-toggle="tooltip" data-placement="bottom" title="Unlike"
+                            class="like fas fa-thumbs-up pr-2">
+                        <span>{{comment.get_total_likes}}</span>
+                        </i>
+                        </a>
+                        {% else %}
+                        <!--not liked-->
+                        <a href={% url 'requirement_comment_vote' comment_id=comment.pk opition='like' %}><i
+                            data-toggle="tooltip" data-placement="bottom" title="Like"
+                            class="default-icon fas fa-thumbs-up pr-2">
+                        <span>{% if comment.get_total_likes  %}{{comment.get_total_likes}} {% else %} 0
+                        {% endif %}</span></i>
+                        </a>
+                        {% endif %}
+                        </span>
+                        <span class="ml-3 pointer">
+                        {% if request.user in comment.dis_likes.users.all %}
+                        <a href={% url 'requirement_comment_vote' comment_id=comment.pk opition='dis_like' %}><i
+                        data-toggle="tooltip" data-placement="bottom" title="i dislike this"
+                        class="dislike fas fa-thumbs-down pr-2">
+                        <span>{{comment.get_total_dis_likes}}</span></i>
+                        </a>
+                        {% else %}
+                        <a href={% url 'requirement_comment_vote' comment_id=comment.pk opition='dis_like' %}><i
+                        data-toggle="tooltip" data-placement="bottom" title="i dislike this "
+                        class="default-icon fas fa-thumbs-down pr-2">
+                        <span>{% if  comment.get_total_dis_likes %}{{comment.get_total_dis_likes}}
+                        {% else %} 0 {% endif %}</span></i>
+                        </a>
+                        {% endif %}
+                        </span>
+                    </div>
+                    
+                </div>
         </div>
+            
     </div>
     {% empty %}
     <p>No comments here yet :(</p>

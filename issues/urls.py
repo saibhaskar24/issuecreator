@@ -15,6 +15,6 @@ urlpatterns = [
     path('user/<str:username>/', views.UserListView.as_view(), name='user-issues'),
     path('post/<int:pk>/comment/', views.add_comment_to_post, name='add_comment_to_post'),
     path('profile/', views.view_profile, name='view_profile'),
-    path('comments', views.Requirement.as_view(), name='requirements'),
-    path('requirement/<int:comment_id>/<str:opition>', views.UpdateCommentVote.as_view(), name='requirement_comment_vote'),
+    path('comments/', views.Requirement.as_view(), name='requirements'),
+    path('requirement/<int:comment_id>/<str:opition>/', views.UpdateCommentVote.as_view(), name='requirement_comment_vote'),
 ]

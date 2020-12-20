@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404, reverse
-from .models import UserProfile, Issue, Comment
+from .models import UserProfile, Issue, Comment, DisLike, Like
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator
 from .forms import UserRegisterForm, CommentForm
@@ -134,8 +134,8 @@ def add_comment_to_post(request, pk):
         form = CommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
-            comment.post = post
-            comment.author = request.user
+            comment.issue = post
+            comment.user = request.user
             comment.save()
             return redirect('issue-detail', pk=pk)
     else:
@@ -180,9 +180,10 @@ class UpdateCommentVote(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
 
         comment_id = self.kwargs.get('comment_id', None)
-        opinion = self.kwargs.get('opinion', None) # like or dislike button clicked
+        opition = self.kwargs.get('opition', None) # like or dislike button clicked
 
         comment = get_object_or_404(Comment, id=comment_id)
+        pk = comment.issue.id
 
         try:
             # If child DisLike model doesnot exit then create
@@ -212,5 +213,5 @@ class UpdateCommentVote(LoginRequiredMixin, View):
                 comment.dis_likes.users.add(request.user)
                 comment.likes.users.remove(request.user)
         else:
-            return reverse('comment')
-        return reverse('comment')
+            return redirect('issue-detail', pk=pk)
+        return redirect('issue-detail', pk=pk)

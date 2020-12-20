@@ -4,7 +4,7 @@
 {{ form.errors}}
     <h1>New comment</h1>
     <form method="POST" class="post-form">{% csrf_token %}
-        {{ form.text }}
+        {{ form.comment }}
         <button type="submit" class="save btn btn-default">ADD</button>
     </form>
 {% endblock %}
