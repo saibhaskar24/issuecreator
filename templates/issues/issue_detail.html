@@ -20,9 +20,42 @@
         <p>{{ object.description}}</p>
         
     </div>
+
+
+    <div >
+		{% if user in object.likes.users.all%}
+		<!-- already liked-->
+		<a href={% url 'requirement_issue_vote' issue_id=object.pk opition='like' %}> 
+		<i class='fas fa-thumbs-up' style='font-size:48px;'></i> <span>{{object.get_total_likes}}</span>
+		</a>
+		{% else %}
+		<!--not liked-->
+		<a href={% url 'requirement_issue_vote' issue_id=object.pk opition='like' %}>
+			<i class='far fa-thumbs-up' style='font-size:48px;'></i>
+		<span>{% if object.get_total_likes  %}{{object.get_total_likes}} {% else %} 0
+		{% endif %}</span>
+		</a>
+		{% endif %}
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		{% if request.user in object.dis_likes.users.all %}
+		<a href={% url 'requirement_issue_vote' issue_id=object.pk opition='dis_like' %}>
+			<i class="fas fa-thumbs-down" style='font-size:48px;'>
+		<span>{{object.get_total_dis_likes}}</span></i>
+		</a>
+		{% else %}
+		<a href={% url 'requirement_issue_vote' issue_id=object.pk opition='dis_like' %}>
+			<i class="far fa-thumbs-down" style='font-size:48px;'>
+		<span>{% if  object.get_total_dis_likes %}{{object.get_total_dis_likes}}
+		{% else %} 0 {% endif %}</span></i>
+		</a>
+		{% endif %}
+	</div>
+
+
+
 </article>
 
-
+<br><br>
 <div class="container">
     {% if user.is_authenticated %}
     <a class="btn btn-primary" href="{% url 'add_comment_to_post' object.id %}">Add comment</a><br> {% endif %} {% for comment in object.comments.all %}

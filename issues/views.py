@@ -15,7 +15,7 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
-
+from django.http import HttpResponseRedirect
 
 # Create your views here.
 
@@ -190,7 +190,6 @@ class UpdateCommentVote(LoginRequiredMixin, View):
       
 class UpdateIssueVote(LoginRequiredMixin, View):
     login_url = '/login/'
-    redirect_field_name = 'next'
     def get(self, request, *args, **kwargs):
         issue_id = self.kwargs.get('issue_id', None)
         opition = self.kwargs.get('opition', None) # like or dislike button clicked
@@ -225,5 +224,5 @@ class UpdateIssueVote(LoginRequiredMixin, View):
                 issue.dis_likes.users.add(request.user)
                 issue.likes.users.remove(request.user)
         else:
-            return redirect('index')
-        return redirect('index')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
