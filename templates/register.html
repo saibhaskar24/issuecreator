@@ -8,9 +8,11 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-                <div class="card card-signin my-5">
+                <!--here-->
+                <div  class="card bg-dark text-white text-capitalize card-signin my-5">
                     <div class="card-body">
-                        <h5 class="card-title text-center">Register</h5>
+                        <!--here-->
+                        <h5 class="card-title text-center"><b>REGISTER</b></h5>
                         {{ form.errors}}
                              {{ form.help_text }}
                         <form class="form-signin" method="POST">
@@ -40,7 +42,8 @@
                                 {% render_field form.password2 placeholder=form.password2.label class+="form-control"  %}
                                 <label for="id_password2">Confirm Password</label>
                             </div>
-                            <button class="btn btn-lg btn-primary btn-block text-uppercase"
+                            <!--here-->
+                            <button class="btn btn-sm btn-info text-capitalize"
                                 type="submit">Register</button>
                             </form>
                     </div>
@@ -64,10 +67,11 @@
 
     body {
 
+    /********************here****************/
+        background: grey;  /* fallback for old browsers */
+/*background: -webkit-linear-gradient(to right, #2F80ED, #56CCF2);  /* Chrome 10-25, Safari 5.1-6 */
+/*background: linear-gradient(to right, #2F80ED, #56CCF2); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
-        background: #56CCF2;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to right, #2F80ED, #56CCF2);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to right, #2F80ED, #56CCF2); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
         
         background-size: cover;
@@ -76,7 +80,7 @@ background: linear-gradient(to right, #2F80ED, #56CCF2); /* W3C, IE 10+/ Edge, F
 
     .card-signin {
         border: 0;
-        border-radius: 1rem;
+        /*here*/
         box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
     }
 
