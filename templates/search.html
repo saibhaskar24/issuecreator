@@ -1,0 +1,70 @@
+{% extends "header.html"%}
+
+{% block content %}
+
+<h1> Search </h1>
+{% if submitbutton == 'Search' and request.GET.q != '' %}
+{% if results %}
+{% block title %}Search result for {{ request.GET.q }}{% endblock %}
+<h3>Results for <b>{{ request.GET.q }}</b></h3>
+<br /><br />
+
+{% for issue in results %}
+
+
+<div class="card shadow p-3 mb-5 bg-white rounded">
+	<div style="text-align: inline;">
+		<img src="{{ issue.user.userprofile.thumbnail.url }}" width="40" height="40" alt="Profile Image" style="border-radius: 50%;">
+		&nbsp;
+		<a class="card-subtitle mb-2 text-muted" href="{% url 'user-issues' issue.user.username %}">{{ issue.user }}</a>
+	</div>
+
+	<div class="card-body">
+		<a class="card-title" style="font-size: 2em;" href="{% url 'issue-detail' issue.id %}">{{ issue.title }}</a>
+		</br>
+		<small>{{ issue.date_issueed|date:"F d, Y" }}</small>
+		</br></br>
+		<p class="card-text">{{ issue.description|truncatewords:"30" }}</p>
+
+	</div>
+	<a href="{% url 'issue-detail' issue.id %}">Comments: {{ issue.comments.count }}</a>
+	<div >
+		{% if user in issue.likes.users.all%}
+		<!-- already liked-->
+		<a href={% url 'requirement_issue_vote' issue_id=issue.pk opition='like' %}> 
+		<i class='fas fa-thumbs-up'></i> <span>{{issue.get_total_likes}}</span>
+		</a>
+		{% else %}
+		<!--not liked-->
+		<a href={% url 'requirement_issue_vote' issue_id=issue.pk opition='like' %}>
+			<i class='far fa-thumbs-up'></i>
+		<span>{% if issue.get_total_likes  %}{{issue.get_total_likes}} {% else %} 0
+		{% endif %}</span>
+		</a>
+		{% endif %}
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		{% if request.user in issue.dis_likes.users.all %}
+		<a href={% url 'requirement_issue_vote' issue_id=issue.pk opition='dis_like' %}>
+			<i class="fas fa-thumbs-down">
+		<span>{{issue.get_total_dis_likes}}</span></i>
+		</a>
+		{% else %}
+		<a href={% url 'requirement_issue_vote' issue_id=issue.pk opition='dis_like' %}>
+			<i class="far fa-thumbs-down">
+		<span>{% if  issue.get_total_dis_likes %}{{issue.get_total_dis_likes}}
+		{% else %} 0 {% endif %}</span></i>
+		</a>
+		{% endif %}
+	</div>
+</div>
+
+{% endfor %}
+{% else %}
+No search results for this query
+{% endif %}
+{% endif %}
+
+</br>
+
+
+{% endblock content %}

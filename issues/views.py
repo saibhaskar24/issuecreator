@@ -113,7 +113,7 @@ def searchissue(request):
         query = request.GET.get('q')
         submitbutton = request.GET.get('submit')
         if query is not None:
-            lookups = Q(title__icontains=query) | Q(context__icontains=query)
+            lookups = Q(title__icontains=query) | Q(description__icontains=query)
             results = Issue.objects.filter(lookups).distinct()
             context = {'results': results,
                        'submitbutton': submitbutton}

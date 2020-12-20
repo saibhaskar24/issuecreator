@@ -30,12 +30,11 @@
                 {% endif %}
             </ul>
             {% if user.is_authenticated %}
-            <form class="d-flex">
-
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
-              
+            <form class="d-flex" action="{% url 'searchissue' %}" method="GET" value="{{request.GET.q}}">
+                <input class="form-control mr-sm-2" type="text" name="q" value="{{request.GET.q}}" placeholder="Search..." aria-label="Search">
+                <button class="btn btn-outline-info my-2 my-sm-0" name="submit" type="submit" value="Search">Search</button>
             </form>
+              
 
             {% else %}
             <div class="d-flex">
