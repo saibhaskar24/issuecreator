@@ -27,6 +27,13 @@ def index(request):
     issues = paginator.get_page(page)
     return render(request, 'index.html', {'issues': issues})
 
+def newspaper(request):
+    issues = Issue.objects.filter(is_newspaper=True, is_resolved = False).order_by('-date_posted')
+    paginator = Paginator(issues, 10)
+    page = request.GET.get('page')
+    issues = paginator.get_page(page)
+    return render(request, 'newspaper.html', {'issues': issues})
+
 
 def register(request):
     if request.method == 'POST':
@@ -190,6 +197,8 @@ class UpdateCommentVote(LoginRequiredMixin, View):
       
 class UpdateIssueVote(LoginRequiredMixin, View):
     login_url = '/login/'
+    redirect_field_name = 'index'
+
     def get(self, request, *args, **kwargs):
         issue_id = self.kwargs.get('issue_id', None)
         opition = self.kwargs.get('opition', None) # like or dislike button clicked
@@ -225,4 +234,10 @@ class UpdateIssueVote(LoginRequiredMixin, View):
                 issue.likes.users.remove(request.user)
         else:
             return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+        if issue.get_total_likes() >= 100:
+            issue.is_newspaper = True
+            issue.save()
+        else:
+            issue.is_newspaper = False
+            issue.save()
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

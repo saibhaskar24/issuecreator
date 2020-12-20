@@ -58,7 +58,8 @@
 <br><br>
 <div class="container">
     {% if user.is_authenticated %}
-    <a class="btn btn-primary" href="{% url 'add_comment_to_post' object.id %}">Add comment</a><br> {% endif %} {% for comment in object.comments.all %}
+    <a class="btn btn-primary" href="{% url 'add_comment_to_post' object.id %}">Add comment</a><br> {% endif %} 
+    {% for comment in object.comments.all %}
     <br>
     <div class="row">
         <div class="card border-left-0 border-right-0 border-top-0">

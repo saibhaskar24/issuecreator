@@ -2,7 +2,7 @@
 {% block title %}Issue Creator{% endblock %}
 {% block content %}
 
-
+<h3>Newspapers</h3>
 </br>
 {% for issue in issues %}
 
@@ -52,7 +52,8 @@
 	</div>
 </div>
 {% empty %}
-    <p>No Issues here :(</p>
+    <p>No Newspapers here :(</p>
+
 {% endfor %}
 
 {% if issues.paginator.num_pages > 1 %}

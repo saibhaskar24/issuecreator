@@ -34,6 +34,8 @@ class Issue(models.Model):
     location = models.CharField(max_length=20)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='issue_images', blank=True)
+    is_resolved = models.BooleanField(default=False)
+    is_newspaper = models.BooleanField(default=False)
 
     def get_total_likes(self):
         return self.likes.users.count()
