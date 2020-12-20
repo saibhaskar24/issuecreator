@@ -22,6 +22,34 @@
 
 	</div>
 	<a href="{% url 'issue-detail' issue.id %}">Comments: {{ issue.comments.count }}</a>
+	<div >
+		{% if user in issue.likes.users.all%}
+		<!-- already liked-->
+		<a href={% url 'requirement_issue_vote' issue_id=issue.pk opition='like' %}> 
+		<i class='fas fa-thumbs-up'></i> <span>{{issue.get_total_likes}}</span>
+		</a>
+		{% else %}
+		<!--not liked-->
+		<a href={% url 'requirement_issue_vote' issue_id=issue.pk opition='like' %}>
+			<i class='far fa-thumbs-up'></i>
+		<span>{% if issue.get_total_likes  %}{{issue.get_total_likes}} {% else %} 0
+		{% endif %}</span>
+		</a>
+		{% endif %}
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		{% if request.user in issue.dis_likes.users.all %}
+		<a href={% url 'requirement_issue_vote' issue_id=issue.pk opition='dis_like' %}>
+			<i class="fas fa-thumbs-down">
+		<span>{{issue.get_total_dis_likes}}</span></i>
+		</a>
+		{% else %}
+		<a href={% url 'requirement_issue_vote' issue_id=issue.pk opition='dis_like' %}>
+			<i class="far fa-thumbs-down">
+		<span>{% if  issue.get_total_dis_likes %}{{issue.get_total_dis_likes}}
+		{% else %} 0 {% endif %}</span></i>
+		</a>
+		{% endif %}
+	</div>
 </div>
 
 {% endfor %}

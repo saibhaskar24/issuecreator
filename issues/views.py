@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404, reverse
-from .models import UserProfile, Issue, Comment, DisLike, Like
+from .models import UserProfile, Issue, Comment, CDisLike, CLike, IDisLike, ILike
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator
 from .forms import UserRegisterForm, CommentForm
@@ -142,36 +142,6 @@ def add_comment_to_post(request, pk):
         form = CommentForm()
     return render(request, 'add_comment_to_post.html', {'form': form})
 
-
-
-class Requirement(View):
-    form_class = CommentForm
-    template_name = 'tcomment.html'
-
-    def get(self, request, *args, **kwargs):
-        form = self.form_class()
-        comment = Comment.objects.all()
-        context = {}
-        context['page_obj'] = comment
-        context['form'] = form
-
-        return render(request, self.template_name, context)
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            comment_form = form.save(commit=False)
-            comment_form.user = request.user
-            comment_form.save()
-            messages.success(request, 'Your comment successfully addedd')
-
-            return reverse('comment')
-        
-        context = {}
-        context['form'] = form
-
-        return render(request, self.template_name, context)
-      
       
 class UpdateCommentVote(LoginRequiredMixin, View):
     login_url = '/login/'
@@ -189,13 +159,13 @@ class UpdateCommentVote(LoginRequiredMixin, View):
             # If child DisLike model doesnot exit then create
             comment.dis_likes
         except Comment.dis_likes.RelatedObjectDoesNotExist as identifier:
-            DisLike.objects.create(comment = comment)
+            CDisLike.objects.create(comment = comment)
 
         try:
             # If child Like model doesnot exit then create
             comment.likes
         except Comment.likes.RelatedObjectDoesNotExist as identifier:
-            Like.objects.create(comment = comment)
+            CLike.objects.create(comment = comment)
 
         if opition.lower() == 'like':
 
@@ -215,3 +185,45 @@ class UpdateCommentVote(LoginRequiredMixin, View):
         else:
             return redirect('issue-detail', pk=pk)
         return redirect('issue-detail', pk=pk)
+
+
+      
+class UpdateIssueVote(LoginRequiredMixin, View):
+    login_url = '/login/'
+    redirect_field_name = 'next'
+    def get(self, request, *args, **kwargs):
+        issue_id = self.kwargs.get('issue_id', None)
+        opition = self.kwargs.get('opition', None) # like or dislike button clicked
+
+        issue = get_object_or_404(Issue, id=issue_id)
+
+        try:
+            # If child DisLike model doesnot exit then create
+            issue.dis_likes
+        except Issue.dis_likes.RelatedObjectDoesNotExist as identifier:
+            IDisLike.objects.create(issue = issue)
+
+        try:
+            # If child Like model doesnot exit then create
+            issue.likes
+        except Issue.likes.RelatedObjectDoesNotExist as identifier:
+            ILike.objects.create(issue = issue)
+
+        if opition.lower() == 'like':
+
+            if request.user in issue.likes.users.all():
+                issue.likes.users.remove(request.user)
+            else:    
+                issue.likes.users.add(request.user)
+                issue.dis_likes.users.remove(request.user)
+
+        elif opition.lower() == 'dis_like':
+
+            if request.user in issue.dis_likes.users.all():
+                issue.dis_likes.users.remove(request.user)
+            else:    
+                issue.dis_likes.users.add(request.user)
+                issue.likes.users.remove(request.user)
+        else:
+            return redirect('index')
+        return redirect('index')

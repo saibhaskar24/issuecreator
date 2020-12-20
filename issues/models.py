@@ -33,9 +33,13 @@ class Issue(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
     location = models.CharField(max_length=20)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    likes = models.IntegerField(default=0)
-    dislikes = models.IntegerField(default=0)
     image = models.ImageField(upload_to='issue_images', blank=True)
+
+    def get_total_likes(self):
+        return self.likes.users.count()
+
+    def get_total_dis_likes(self):
+        return self.dis_likes.users.count()
 
     def __str__(self):
         return self.title
@@ -55,9 +59,9 @@ class Comment(models.Model):
         return self.dis_likes.users.count()
 
     def __str__(self):
-        return str(self.comment)[:30]
+        return self.comment
 
-class Like(models.Model):
+class CLike(models.Model):
     comment = models.OneToOneField(Comment, related_name="likes", on_delete=models.CASCADE)
     users = models.ManyToManyField(User, related_name='requirement_comment_likes')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -66,7 +70,7 @@ class Like(models.Model):
     def __str__(self):
         return str(self.comment.comment)[:30]
 
-class DisLike(models.Model):
+class CDisLike(models.Model):
     comment = models.OneToOneField(Comment, related_name="dis_likes", on_delete=models.CASCADE)
     users = models.ManyToManyField(User, related_name='requirement_comment_dis_likes')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -74,3 +78,21 @@ class DisLike(models.Model):
 
     def __str__(self):
         return str(self.comment.comment)[:30]
+
+class ILike(models.Model):
+    issue = models.OneToOneField(Issue, related_name="likes", on_delete=models.CASCADE)
+    users = models.ManyToManyField(User, related_name='requirement_issue_likes')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.issue.title)
+
+class IDisLike(models.Model):
+    issue = models.OneToOneField(Issue, related_name="dis_likes", on_delete=models.CASCADE)
+    users = models.ManyToManyField(User, related_name='requirement_issue_dis_likes')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.issue.title)
