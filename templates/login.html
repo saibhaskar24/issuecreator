@@ -6,23 +6,28 @@
             <div class="row">
                 <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
                     <div class="card card-signin my-5">
-                        <div class="card-body">
-                            <h5 class="card-title text-center">Sign In</h5>
+                        <!--Here-->
+                        <div class="card-body bg-dark text-white">
+                            <!--Here-->
+                            <h5 class="card-title text-center">SIGN IN</h5>
                             <form class="form-signin" method="POST">
                                 {% csrf_token %} {% for error in form.non_field_errors %}
                                 <strong style="color: red">{{ error }}</strong> {% endfor %}
                                 <br>
+                                <!--Here-->
                                 <div class="form-label-group">
-                                    {% render_field form.username placeholder=form.username.label class+="form-control" %}
                                     <label for="id_username">User name</label>
+                                    {% render_field form.username placeholder=form.username.label class+="form-control" %}
+                                    <br>
                                 </div>
-
+                                <!--Here-->
                                 <div class="form-label-group">
-                                    {% render_field form.password placeholder=form.password.label class+="form-control" %}
                                     <label for="id_password">Password</label>
+                                    {% render_field form.password placeholder=form.password.label class+="form-control" %}
+                                    <br>
                                 </div>
-
-                                <button class="btn rounded-pill btn-lg btn-primary btn-block text-uppercase" type="submit">Sign in</button>
+                                <!--Here-->
+                                <button class="btn rounded-pill btn-md btn-info btn-block text-capitalize" type="submit">Sign in</button>
                                
                             </form>
                         </div>
@@ -31,6 +36,13 @@
             </div>
         </div>
 
+<style>
+    body
+    {
+        background-color: grey;
+    }
 
+
+</style>
 
 {% endblock %}
